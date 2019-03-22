@@ -15,13 +15,14 @@ node{
         }
         stage('publish website'){
             withEnv(["PATH+SNAP=/snap/bin"]){
+                sh 'curl -u senaingrid:b2122ec90e78610b4b6317aad1912a73e601aebd https://api.github.com/senaingrid'
                 echo "Publishing ${params.project} project"
                 sh 'git submodule init && git submodule update'
                 sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
                 // sh '(cd ./static && tar xvjf ../qmstr-docs.tar.bz2 && mv ./docs ./documentation)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh 'git config http.sslVersion tlsv1.2'
-                sh 'git push --force https://senaingrd:f3e566f8a4ae5d4c89ce6b2e93ede9d5d50db73b@github.com/senaingrid/test-web.git gh-pages'
+                sh 'git push --force https://senaingrd:b2122ec90e78610b4b6317aad1912a73e601aebd@github.com/senaingrid/test-web gh-pages'
                 }
             }
         }
