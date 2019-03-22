@@ -22,7 +22,7 @@ node{
                 sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
                 // sh '(cd ./static && tar xvjf ../qmstr-docs.tar.bz2 && mv ./docs ./documentation)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
-                sh 'echo "*****"'
+                sh 'git config http.sslVersion tlsv1.2'
                 sh 'git push --force https://${params.ciuser}:${params.cipwd}@github.com/senaingrid/test-web gh-pages'
                 }
             }
