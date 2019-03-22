@@ -2,7 +2,7 @@ node{
 
     try{
         parameters {
-            string(name: 'project', defaultValue: 'nil', description: 'Project name that triggers web publisher')          
+            string(name: 'project', defaultValue: 'nil', description: 'Project name that triggers web publisher')
         }
         stage('Clone sources') {
             cleanWs()
@@ -11,6 +11,7 @@ node{
                 copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-cURL-demo', selector: upstream(fallbackToLastSuccessful: true)
             } else if ("${params.project}" == 'docs') {
                 copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-docs-build', selector: upstream(fallbackToLastSuccessful: true)
+            }
         }
         stage('publish website'){
             withEnv(["PATH+SNAP=/snap/bin", "FILE=${params.tarfilename}"]){
@@ -20,9 +21,7 @@ node{
                 // sh '(cd ./static && tar xvjf ../qmstr-docs.tar.bz2 && mv ./docs ./documentation)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh 'echo "*****"'
-                // withCredentials([usernamePassword(credentialsId: 'NEED_TO_UPDATE', passwordVariable: 'cipassword', usernameVariable: 'ciuser')]) {
                 sh 'git push --force https://github.com/senaingrid/test-web.git gh-pages'
-                // }
             }
         }
     }
