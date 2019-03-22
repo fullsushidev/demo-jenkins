@@ -8,7 +8,7 @@ node{
         }
         stage('Clone sources') {
             cleanWs()
-            git credentialsId: 'NEED_TO_UPDATE', poll: true, url: 'https://github.com/senaingrid/test-web'
+            git credentialsId: '6374572f-c47a-4939-beda-2ee601d65ff7', poll: true, url: 'https://github.com/qmstr/web'
             if ("${params.project}" == 'curl') {
                 copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-cURL-demo', selector: upstream(fallbackToLastSuccessful: true)
             }
