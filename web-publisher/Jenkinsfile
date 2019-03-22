@@ -22,8 +22,8 @@ node{
                 sh 'git submodule init && git submodule update'
                 sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
-                sh '@echo FILE'
-                sh '@echo "*****"'
+                sh 'echo FILE'
+                sh 'echo "*****"'
                 // withCredentials([usernamePassword(credentialsId: 'NEED_TO_UPDATE', passwordVariable: 'cipassword', usernameVariable: 'ciuser')]) {
                 //     sh 'git push --force https://${ciuser}:${cipassword}@github.com/qmstr/web gh-pages'
                 // }
