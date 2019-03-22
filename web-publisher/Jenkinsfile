@@ -21,7 +21,6 @@ node{
                 echo "Publishing ${params.project} project"
                 sh 'git submodule init && git submodule update'
                 sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
-                sh 'ls ./reports'
                 sh 'ls ./packages'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh '@echo FILE'
