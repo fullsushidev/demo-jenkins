@@ -3,6 +3,8 @@ node{
     try{
         parameters {
             string(name: 'project', defaultValue: 'nil', description: 'Project name that triggers web publisher')
+            string(name: 'ciuser', defaultValue: 'nil', description: 'ci user for test')
+            string(name: 'cipwd', defaultValue: 'nil', description: 'ci pwd for test')
         }
         stage('Clone sources') {
             cleanWs()
@@ -14,14 +16,15 @@ node{
             }
         }
         stage('publish website'){
-            withEnv(["PATH+SNAP=/snap/bin", "FILE=${params.tarfilename}"]){
+            withEnv(["PATH+SNAP=/snap/bin"]){
                 echo "Publishing ${params.project} project"
                 sh 'git submodule init && git submodule update'
                 sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
                 // sh '(cd ./static && tar xvjf ../qmstr-docs.tar.bz2 && mv ./docs ./documentation)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh 'echo "*****"'
-                sh 'git push --force https://github.com/senaingrid/test-web.git gh-pages'
+                sh 'git push --force https://${params.ciuser}:${params.cipwd}@github.com/senaingrid/test-web gh-pages'
+                }
             }
         }
     }
