@@ -3,29 +3,32 @@ node{
     try{
         parameters {
             string(name: 'project', defaultValue: 'nil', description: 'Project name that triggers web publisher')
+            string(name: 'tarfilename', defaultValue: 'qmstr-reports.tar.bz2', description: 'tar file name')
+            
         }
         stage('Clone sources') {
             cleanWs()
             git credentialsId: 'NEED_TO_UPDATE', poll: true, url: 'https://github.com/senaingrid/test-web'
             if ("${params.project}" == 'curl') {
                 copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-cURL-demo', selector: upstream(fallbackToLastSuccessful: true)
-            } else if ("${params.project}" == 'jabref') {
-                copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-jabref-demo', selector: upstream(fallbackToLastSuccessful: true)
             }
             // else if ("${params.project}" == 'docs') {
             //     copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr/doc', selector: upstream(fallbackToLastSuccessful: true)
 
         }
         stage('publish website'){
-            withEnv(["PATH+SNAP=/snap/bin"]){
+            withEnv(["PATH+SNAP=/snap/bin", "FILE=${params.tarfilename}"]){
                 echo "Publishing ${params.project} project"
                 sh 'git submodule init && git submodule update'
                 sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
+                sh 'echo ./web_data_dir'
+                sh 'echo FILE'
+                sh 'echo *****'
                 sh 'git config http.sslVersion tlsv1.2'
-                withCredentials([usernamePassword(credentialsId: 'NEED_TO_UPDATE', passwordVariable: 'cipassword', usernameVariable: 'ciuser')]) {
-                    sh 'git push --force https://${ciuser}:${cipassword}@github.com/qmstr/web gh-pages'
-                }
+                // withCredentials([usernamePassword(credentialsId: 'NEED_TO_UPDATE', passwordVariable: 'cipassword', usernameVariable: 'ciuser')]) {
+                //     sh 'git push --force https://${ciuser}:${cipassword}@github.com/qmstr/web gh-pages'
+                // }
             }
         }
     }
