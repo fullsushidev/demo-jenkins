@@ -16,14 +16,14 @@ node{
         stage('publish website'){
             withEnv(["PATH+SNAP=/snap/bin"]){
                 sh 'git config credential.helper store'
-                sh 'curl -u senaingrid:b2122ec90e78610b4b6317aad1912a73e601aebd https://api.github.com/senaingrid'
+                sh 'curl -u senaingrid:2dfdaa3843ec8f30399c3a0c9437e41ea2437ae2 https://api.github.com/senaingrid'
                 echo "Publishing ${params.project} project"
                 sh 'git submodule init && git submodule update'
                 sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
                 // sh '(cd ./static && tar xvjf ../qmstr-docs.tar.bz2 && mv ./docs ./documentation)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh 'git config http.sslVersion tlsv1.2'
-                sh 'git push --force https://senaingrd:b2122ec90e78610b4b6317aad1912a73e601aebd@github.com/senaingrid/test-web gh-pages'
+                sh 'git push --force https://senaingrd:2dfdaa3843ec8f30399c3a0c9437e41ea2437ae2@github.com/senaingrid/test-web gh-pages'
                 }
             }
         }
