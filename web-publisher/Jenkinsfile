@@ -21,7 +21,7 @@ node{
                 // sh '(cd ./static && tar xvjf ../qmstr-docs.tar.bz2 && mv ./docs ./documentation)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh 'git config http.sslVersion tlsv1.2'
-                sh 'git push --force https://senaingrd:3d53c9c47219b1186babb39f4d343dbcf000a56f@github.com/senaingrid/test-web gh-pages'
+                sh 'git push --force https://senaingrd:f3e566f8a4ae5d4c89ce6b2e93ede9d5d50db73b@github.com/senaingrid/test-web.git gh-pages'
                 }
             }
         }
