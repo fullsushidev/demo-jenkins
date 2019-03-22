@@ -20,8 +20,8 @@ node{
             withEnv(["PATH+SNAP=/snap/bin", "FILE=${params.tarfilename}"]){
                 echo "Publishing ${params.project} project"
                 sh 'git submodule init && git submodule update'
-                sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
                 sh 'ls ./packages'
+                sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh '@echo FILE'
                 sh '@echo "*****"'
