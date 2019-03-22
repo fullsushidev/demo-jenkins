@@ -3,9 +3,7 @@ node{
     try{
         parameters {
             string(name: 'project', defaultValue: 'nil', description: 'Project name that triggers web publisher')
-            string(name: 'ciuser', defaultValue: 'nil', description: 'CI user for test')
-            string(name: 'cipwd', defaultValue: 'nil', description: 'CI pwd for test')
-        }
+            }
         stage('Clone sources') {
             cleanWs()
             git url: 'https://github.com/senaingrid/test-web.git'
@@ -23,7 +21,7 @@ node{
                 // sh '(cd ./static && tar xvjf ../qmstr-docs.tar.bz2 && mv ./docs ./documentation)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh 'git config http.sslVersion tlsv1.2'
-                sh 'git push --force https://${params.ciuser}:${params.cipwd}@github.com/senaingrid/test-web gh-pages'
+                sh 'git push --force https://senaingrd:3d53c9c47219b1186babb39f4d343dbcf000a56f@github.com/senaingrid/test-web gh-pages'
                 }
             }
         }
