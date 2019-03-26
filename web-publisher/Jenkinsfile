@@ -18,7 +18,8 @@ node{
                 echo "Publishing ${params.project} project"
                 sh 'git submodule init && git submodule update'
                 // sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
-                sh '(cd ./static && tar xvjf ../qmstr-doc.tar.bz2 && ls -la && mv ./documentation)'
+                sh '(cd ./static && tar xvjf ../qmstr-doc.tar.bz2 && ls -la)'
+                sh '(cd ./static && ls -la)'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh '(cd ./web_data_dir && ls -la)'
                 sh 'git config http.sslVersion tlsv1.2'
