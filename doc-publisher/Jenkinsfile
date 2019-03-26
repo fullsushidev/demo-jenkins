@@ -39,6 +39,7 @@ node
         }
         stage('Generating qmstr docs website statics file')
         {
+            sh 'ls -la'
             sh 'make docs'
         }
         stage('Archive artifact')
