@@ -18,7 +18,7 @@ node{
                 echo "Publishing ${params.project} project"
                 sh 'git submodule init && git submodule update'
                 sh '(cd ./ && ls -la)'
-                // sh '(tar xvjf ./qmstr-doc.tar.bz2)'
+                sh '(tar xvjf ./qmstr-doc.tar.bz2)'
                 sh '(cd ./ && ls -la)'
 
                 // sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
