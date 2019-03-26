@@ -7,6 +7,8 @@ node {
     try{
 
         parameters {
+            string(name: 'qmstrrepo', defaultValue: 'QMSTR', description: 'Repo to use QMSTR, endocode or senaingrid')
+            string(name: 'qmstrbranch', defaultValue: 'master', description: 'Branch of qmstr repo to build')
         }
 
         stage('clean')
@@ -21,7 +23,7 @@ node {
             sh "ls -laR"
         }
         stage('Clone sources') {
-            dir('qmstr-master') {
+            dir('qmstr') {
                 checkout([$class: 'GitSCM',
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [],
@@ -29,24 +31,18 @@ node {
                     branches: [[name: "${params.qmstrbranch}"]],
                     userRemoteConfigs: [[url: "https://github.com/${params.qmstrrepo}/qmstr.git"]]])
                 sh "git clean -fxd"
-                sh "mkdir documentation"
-            }
-            dir("web"){
-                git poll: false, url: 'https://github.com/senaingrid/test-web'
             }
         }
-        stage('Generating qmstr doc') {
-            withEnv(["ENV1=${reftovarstring}"])
-            {
-                    sh "make doc"
-            }
+        stage('Generating qmstr docs website statics file') {
+            sh 'make docs'
         }
         stage('Archive artifact')
         {
-            archiveArtifacts 'qmstr/qmstr-documentation-build/qmstr-doc.tar.bz2'
+            archiveArtifacts 'qmstr/doc/qmstr-doc.tar.bz2'
         }
         stage('Publish report to website') {
-            build job: '/QMSTR-intern/web-publisher', parameters: [string(name: 'project', value: 'docs')], propagate: false
+            // build job: '/QMSTR-intern/web-publisher', parameters: [string(name: 'project', value: 'docs')], propagate: false
+            build job: '/QMSTR-intern/WIP-ingrid_builddoc-test', parameters: [string(name: 'project', value: 'docs')], propagate: false
         }
 
     }
