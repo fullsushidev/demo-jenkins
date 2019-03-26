@@ -40,6 +40,7 @@ node
         stage('Generating qmstr docs website statics file')
         {
             withEnv(["PATH+SNAP=/snap/bin"]){
+                sh 'git submodule init && git submodule update'
                 sh 'cd qmstr && make docs'
             }
         }
@@ -57,5 +58,6 @@ node
     catch (Exception e)
     {
         currentBuild.result = 'FAILURE'
+        echo e
     }
 }
