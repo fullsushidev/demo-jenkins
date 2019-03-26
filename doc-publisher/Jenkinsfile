@@ -1,11 +1,15 @@
-node {
+#!groovy
+node
+{
     def qmstrbin = "${env.WORKSPACE}/bin"
     def qmstraddress = ""
     def qmstrcachedir = "$HOME/workspace/QMSTR/qmstrcache"
 
-    try{
+    try
+    {
 
-        parameters {
+        parameters
+        {
             string(name: 'qmstrrepo', defaultValue: 'senaingrid', description: 'Repo to use QMSTR, endocode or senaingrid')
             string(name: 'qmstrbranch', defaultValue: 'master', description: 'Branch of qmstr repo to build')
         }
@@ -21,7 +25,8 @@ node {
             ])
             sh "ls -laR"
         }
-        stage('Clone sources') {
+        stage('Clone sources')
+        {
             dir('qmstr') {
                 checkout([$class: 'GitSCM',
                     doGenerateSubmoduleConfigurations: false,
@@ -32,14 +37,16 @@ node {
                 sh "git clean -fxd"
             }
         }
-        stage('Generating qmstr docs website statics file') {
+        stage('Generating qmstr docs website statics file')
+        {
             sh 'make docs'
         }
         stage('Archive artifact')
         {
             archiveArtifacts 'qmstr/doc/qmstr-doc.tar.bz2'
         }
-        stage('Publish report to website') {
+        stage('Publish report to website')
+        {
             // build job: '/QMSTR-intern/web-publisher', parameters: [string(name: 'project', value: 'docs')], propagate: false
             build job: '/QMSTR-intern/WIP-ingrid_builddoc-test', parameters: [string(name: 'project', value: 'docs')], propagate: false
         }
@@ -48,6 +55,5 @@ node {
     catch (Exception e)
     {
         currentBuild.result = 'FAILURE'
-        }
     }
 }
