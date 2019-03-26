@@ -49,11 +49,6 @@ node {
     catch (Exception e)
     {
         currentBuild.result = 'FAILURE'
-        if (fileExists(qmstrbin + 'qmstrctl')) {
-            withEnv(["PATH=${qmstrbin}:${env.PATH}", "QMSTR_MASTER=${qmstraddress}"]) {
-                sh "qmstrctl logs"
-                sh "qmstrctl quit"
-            }
         }
     }
 }
