@@ -10,7 +10,7 @@ node{
             if ("${params.project}" == 'curl') {
                 copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-cURL-demo', selector: upstream(fallbackToLastSuccessful: true)
             } else if ("${params.project}" == 'docs') {
-                copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-docs-build', selector: upstream(fallbackToLastSuccessful: true)
+                copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/WIP_docs-build', selector: upstream(fallbackToLastSuccessful: true)
             }
         }
         stage('publish website'){
