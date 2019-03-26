@@ -13,7 +13,6 @@ node
             string(name: 'qmstrrepo', defaultValue: 'senaingrid', description: 'Repo to use QMSTR, endocode or senaingrid')
             string(name: 'qmstrbranch', defaultValue: 'master', description: 'Branch of qmstr repo to build')
         }
-
         stage('clean')
         {
             cleanWs(deleteDirs: true,
@@ -40,7 +39,7 @@ node
         stage('Generating qmstr docs website statics file')
         {
             withEnv(["PATH+SNAP=/snap/bin"]){
-                sh 'git submodule init && git submodule update'
+                sh 'cd qmstr/doc && git submodule init && git submodule update'
                 sh 'cd qmstr && make docs'
             }
         }
