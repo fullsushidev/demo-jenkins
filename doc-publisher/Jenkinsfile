@@ -51,7 +51,7 @@ node
         stage('Publish report to website')
         {
             // build job: '/QMSTR-intern/web-publisher', parameters: [string(name: 'project', value: 'docs')], propagate: false
-            build job: '/QMSTR-intern/WIP-ingrid_builddoc-test', parameters: [string(name: 'project', value: 'docs')], propagate: false
+            build job: '/QMSTR-intern/WIP_web-publisher-with-docs', parameters: [string(name: 'project', value: 'docs')], propagate: false
         }
 
     }
