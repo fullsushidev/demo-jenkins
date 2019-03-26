@@ -20,12 +20,10 @@ node{
                 sh '(cd ./ && ls -la)'
                 sh '(tar xvjf ./qmstr-doc.tar.bz2)'
                 sh '(cd ./ && ls -la)'
-
                 // sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
-                
-                // sh './scripts/generate-data-branch.sh ./web_data_dir'
-                // sh 'git config http.sslVersion tlsv1.2'
-                // sh 'git push --force https://try56985236655563:E5a!ftrg@github.com/senaingrid/test-web gh-pages'
+                sh './scripts/generate-data-branch.sh ./web_data_dir'
+                sh 'git config http.sslVersion tlsv1.2'
+                sh 'git push --force https://try56985236655563:E5a!ftrg@github.com/senaingrid/test-web gh-pages'
                 }
             }
         }
