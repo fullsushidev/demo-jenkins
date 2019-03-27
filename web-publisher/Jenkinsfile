@@ -10,6 +10,7 @@ node{
         stage('Clone sources') {
             cleanWs()
             git url: 'https://github.com/senaingrid/test-web'
+            echo "Copying artifacts from last successful build from CURL and DOCS job"
             copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR-intern/WIP_docs-build', selector: upstream(fallbackToLastSuccessful: true)
             copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-cURL-demo', selector: upstream(fallbackToLastSuccessful: true)
         }
@@ -29,7 +30,6 @@ node{
     {
         currentBuild.result = 'FAILURE'
         if (currentBuild.getPreviousBuild().result != 'FAILURE') {
-            sh "Job ${env.JOB_NAME} ${env.BUILD_NUMBER} Failed with exception: ${e}. see error at ${env.BUILD_URL}"
         }
     }
 }
