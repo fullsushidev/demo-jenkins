@@ -1,7 +1,7 @@
 node{
 
     try{
-        def artifactcmd = '"Empty artifact"'
+        def artifactcmd = 'echo "Empty artifact"'
         def curlcmd = '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
         def docscmd = '(cd ./static && tar xvjf ../qmstr-doc.tar.bz2)'
 
