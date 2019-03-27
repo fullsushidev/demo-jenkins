@@ -23,7 +23,9 @@ node{
         stage('publish website'){
             withEnv(["PATH+SNAP=/snap/bin"]){
                 echo "Publishing QMSTR site with ${params.project} project"
-                sh "${extractartifactcmd}"
+                // sh "${extractartifactcmd}"
+                sh 'cd ./static && tar xvjf ../qmstr-doc.tar.bz2'
+                sh '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
                 sh 'git submodule init && git submodule update'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh 'git config http.sslVersion tlsv1.2'
