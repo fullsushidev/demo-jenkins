@@ -24,9 +24,9 @@ node{
             withEnv(["PATH+SNAP=/snap/bin"]){
                 echo "Publishing QMSTR site with ${params.project} project"
                 sh "${docscmd}"
+                sh "${curlcmd}"
                 sh 'git submodule init && git submodule update'
                 // sh "${extractartifactcmd}"
-                sh "${curlcmd}"
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh 'git config http.sslVersion tlsv1.2'
                 sh 'git push --force https://try56985236655563:E5a!ftrg@github.com/senaingrid/test-web gh-pages'
