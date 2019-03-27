@@ -21,8 +21,8 @@ node{
             withEnv(["PATH+SNAP=/snap/bin"]){
                 echo "Publishing QMSTR site with ${params.project} project"
                 sh 'git submodule init && git submodule update'
+                "${artifactcmd}" = "${docscmd}"
                 echo "${artifactcmd}"
-                echo "${docscmd}"
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh '(cd ./web_data_dir && ls -la)'
                 sh 'git config http.sslVersion tlsv1.2'
