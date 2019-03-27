@@ -24,7 +24,7 @@ node{
                 // } else if ("${params.project}" == 'docs') {
                 //     sh '(cd ./static && tar xvjf ../qmstr-doc.tar.bz2)'
                 // }
-                sh '@echo "Empity artifact"'
+                sh 'echo "Empity artifact"'
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh '(cd ./web_data_dir && ls -la)'
                 sh 'git config http.sslVersion tlsv1.2'
