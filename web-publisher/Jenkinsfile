@@ -1,10 +1,8 @@
 node{
 
     try{
-        // Choose the artifact need to be done in the future. Now we are rebuolding everything! =/
-        def extractartifactcmd = 'echo "Empty artifact"'
-        def curlcmd = '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
-        def docscmd = '(cd ./static && tar xvjf ../qmstr-doc.tar.bz2)'
+        def extractcurl = '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
+        def extractdocs = '(cd ./static && tar xvjf ../qmstr-doc.tar.bz2)'
 
         parameters {
             string(name: 'project', defaultValue: 'nil', description: 'Project name that triggers web publisher')
@@ -12,21 +10,15 @@ node{
         stage('Clone sources') {
             cleanWs()
             git url: 'https://github.com/senaingrid/test-web'
-            // if ("${params.project}" == 'curl') {
-                // extractartifactcmd = curlcmd
-            // } else if ("${params.project}" == 'docs') {
-                // extractartifactcmd = docscmd
-            // }
             copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR-intern/WIP_docs-build', selector: upstream(fallbackToLastSuccessful: true)
             copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-cURL-demo', selector: upstream(fallbackToLastSuccessful: true)
         }
         stage('publish website'){
             withEnv(["PATH+SNAP=/snap/bin"]){
                 echo "Publishing QMSTR site with ${params.project} project"
-                sh "${docscmd}"
-                sh "${curlcmd}"
+                sh "${extractdocs}"
                 sh 'git submodule init && git submodule update'
-                // sh "${extractartifactcmd}"
+                sh "${extractcurl}"
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh 'git config http.sslVersion tlsv1.2'
                 sh 'git push --force https://try56985236655563:E5a!ftrg@github.com/senaingrid/test-web gh-pages'
@@ -36,5 +28,8 @@ node{
     catch (Exception e)
     {
         currentBuild.result = 'FAILURE'
+        if (currentBuild.getPreviousBuild().result != 'FAILURE') {
+            sh "Job ${env.JOB_NAME} ${env.BUILD_NUMBER} Failed with exception: ${e}. see error at ${env.BUILD_URL}"
+        }
     }
 }
