@@ -1,8 +1,8 @@
 node{
+    def extractreport = '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
+    def extractdocs = '(cd ./static && tar xvjf ../qmstr-doc.tar.bz2)'
 
     try{
-        def extractcurl = '(cd ./static && tar xvjf ../qmstr-reports.tar.bz2 && mv ./reports ./packages)'
-        def extractdocs = '(cd ./static && tar xvjf ../qmstr-doc.tar.bz2)'
 
         parameters {
             string(name: 'project', defaultValue: 'nil', description: 'Project name that triggers web publisher')
@@ -10,16 +10,21 @@ node{
         stage('Clone sources') {
             cleanWs()
             git url: 'https://github.com/senaingrid/test-web'
-            echo "Copying artifacts from last successful build from CURL and DOCS job"
-            copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR-intern/WIP_docs-build', selector: upstream(fallbackToLastSuccessful: true)
-            copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-cURL-demo', selector: upstream(fallbackToLastSuccessful: true)
+            echo "Copying artifacts from last successful build from DOCS job"
+            copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-docs-static', selector: upstream(fallbackToLastSuccessful: true)
+            echo "Copying artifacts from last successful build from ${params.project} job"
+            if ("${params.project}" == 'curl') {
+                copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-cURL-demo', selector: upstream(fallbackToLastSuccessful: true)
+            } else if ("${params.project}" == 'jabref') {
+                copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-jabref-demo', selector: upstream(fallbackToLastSuccessful: true)
+            }
         }
         stage('publish website'){
             withEnv(["PATH+SNAP=/snap/bin"]){
                 echo "Publishing QMSTR site with ${params.project} project"
-                sh "${extractdocs}"
                 sh 'git submodule init && git submodule update'
-                sh "${extractcurl}"
+                sh "${extractdocs}"
+                sh "${extractreport}"
                 sh './scripts/generate-data-branch.sh ./web_data_dir'
                 sh 'git config http.sslVersion tlsv1.2'
                 sh 'git push --force https://try56985236655563:E5a!ftrg@github.com/senaingrid/test-web gh-pages'
