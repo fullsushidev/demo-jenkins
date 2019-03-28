@@ -12,7 +12,7 @@ node{
             git url: 'https://github.com/senaingrid/test-web'
             "${extractreport}" = ("${params.project}" != 'docs') ?: 'echo "No report to extract."'
             echo "Copying artifacts from last successful build from DOCS job"
-            copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-docs-static', selector: upstream(fallbackToLastSuccessful: true)
+            copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR-intern/WIP_docs-build', selector: upstream(fallbackToLastSuccessful: true)
             echo "Copying artifacts from last successful build from ${params.project} job"
             if ("${params.project}" == 'curl') {
                 copyArtifacts fingerprintArtifacts: true,  flatten: true, projectName: 'QMSTR/qmstr-cURL-demo', selector: upstream(fallbackToLastSuccessful: true)
